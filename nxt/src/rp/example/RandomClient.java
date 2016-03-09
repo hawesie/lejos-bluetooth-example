@@ -3,12 +3,13 @@ package rp.example;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import lejos.nxt.Button;
 import lejos.nxt.comm.BTConnection;
 import lejos.nxt.comm.Bluetooth;
 
-public class AdderClient {
+public class RandomClient {
 
 	/**
 	 * @param args
@@ -19,6 +20,10 @@ public class AdderClient {
 		BTConnection connection = Bluetooth.waitForConnection();
 		System.out.println("OK!");
 
+		int rand = new Random().nextInt();
+		
+		System.out.println("R: " + rand);
+		
 		DataInputStream inputStream = connection.openDataInputStream();
 		DataOutputStream outputStream = connection.openDataOutputStream();
 
@@ -28,7 +33,8 @@ public class AdderClient {
 			try {
 				int input = inputStream.readInt();
 				if (input != 0) {
-					outputStream.writeInt(input + 1);
+					Button.waitForAnyPress();
+					outputStream.writeInt(rand);
 					outputStream.flush();
 				} else {
 					run = false;
